@@ -59,20 +59,18 @@ times{
 
 //File format: v0.1
 HEADER {
-    char[3] "OMF" //This is the magic "string" or number
+    char[3] "HMF" //This is the magic "string" or number
     ushort version //Specification version, formatted as float realversion = version/10
     bitfield options{
         1: has physics
         2: is rigged
-        3: has extra data
+        4: has extra data (Probably can be deprecated and reused, loader doesn't use this and will load it if there is data after the mesh)
         8: Is signed by compiler(Debugging information)
     }
     IF this.options.signed_by_compiler == 1:
         small_string compiler_name_plus_version
     unsigned byte BONE_count
     unsigned byte MESH_count //Each mesh is a LOD
-    IF this.options.has_physics == 1:
-        unsigned byte MESH_ID //The ID of the mesh that is the physics shape
     unsigned byte FACE_count //All meshes MUST have the same amount of faces
 }
 
@@ -85,6 +83,8 @@ IF HEADER.BONE_count > 0:
         }
     }
 
+
+//NOTICE: If the object has physics(HEADER->OPTIONS[bit(1)] is set), then the first object WILL be the physics shape
 MESH {
     bitfield precision{ //Definition of vector_precision
         1 - 2: Vector precision {
