@@ -1,4 +1,4 @@
-//BIG-ENDIAN IS ALWAYS USED
+//Always little endian
 //specification of types:
 
 //Vectors
