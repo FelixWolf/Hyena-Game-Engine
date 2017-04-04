@@ -1,4 +1,4 @@
-//Always little endian
+//Always big endian
 //Special
 0x00 Null
 0x01 True
