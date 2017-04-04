@@ -6,7 +6,7 @@
     format incompatiblities.
 */
 
-//Always big endian
+//Always little endian
 
 //ONLY G8, GA88, RGB8888, and RGBA8888 support non-power of 2 values.
 enum colorModes{
