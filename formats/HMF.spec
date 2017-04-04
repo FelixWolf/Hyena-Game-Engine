@@ -1,4 +1,4 @@
-//Always little endian
+//Always big endian
 //specification of types:
 
 //Vectors
