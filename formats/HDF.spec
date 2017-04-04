@@ -1,20 +1,21 @@
+//Always little endian
 //Special
 0x00 Null
 0x01 True
 0x02 False
 0x03 Undefined
-0x04 Empty(Followed by the type)
+0x04 Empty //Followed by the type
 0x05 Infinity
 0x06 Not A Number
 0x07 Bitfield
 0x08 Double bitfield
-0x09 Date
-0x0A Time
-0x0B STime
-0x0C List(Integer type of length, length, Groups of KeyValues OR Type)
-0x0D KeyValue(Type of key followed by value of key, Type of value followed by value of value)
-0x0E Structure definition(First byte ID, second byte length, followed by types).
-0x0F Use structure(First byte ID, then data)
+0x09 Date //YYYYYYYY YYYYYYYM MMMDDDDD (Bits / 3 bytes / Unix timestamp)
+0x0A Time //HHHHHMMM MMMTTTTT (Bits / 2 bytes / Unix timestamp)
+0x0B STime //HHHHHMMM MMMSSSS SSUUUUUU (Bits / 3 bytes / hour, minute, second, precision(div by 64) / Unix timestamp)
+0x0C List //Integer type of length, length, Groups of KeyValues OR Type
+0x0D KeyValue //Type of key followed by value of key, Type of value followed by value of value
+0x0E Structure definition //First byte ID, second byte length, followed by types
+0x0F Use structure //First byte ID, then data
 
 //Integers
 0x10 int8_t
@@ -48,7 +49,7 @@
     uint32_t length (0x15)
     char[length]
 0x35 Huge String:
-    uint64_t length (0x64)
+    uint64_t length (0x16)
     char[length]
 0x38 Null terminated UTF-8 string
 0x39 Tiny UTF-8 string:
@@ -61,7 +62,7 @@
     uint32_t length (0x15)
     char[length]
 0x3C Huge UTF-8 String:
-    uint64_t length (0x64)
+    uint64_t length (0x16)
     char[length]
     
 //Vectors(And Quaternion)
