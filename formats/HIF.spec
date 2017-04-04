@@ -1,3 +1,11 @@
+/*
+    This format is considered public domain, without any patent, with
+    the following restriction:
+    Use of the format is permitted as is, but if you alter the format,
+    you must change the header from HIF to something else, as to prevent
+    format incompatiblities.
+*/
+
 //Always big endian
 
 //ONLY G8, GA88, RGB8888, and RGBA8888 support non-power of 2 values.
@@ -28,6 +36,14 @@ enum flags{
 {
     //Basics
     char[3] "HIF" //Magic number
+    /*
+        If version_major is changed, then a new loader version is
+            required, due to something like format change/rearrange.
+            Loaders SHOULD NOT attempt to load files if it is not supported.
+        If version_minor is changed, it is likely to backwards compatable
+            with the exception that it likely has a new color mode, or flag.
+            Loaders MAY attempt to load, but must throw an error if unsupported colour mode.
+    */
     unsigned short version_major
     unsigned short version_minor
     
