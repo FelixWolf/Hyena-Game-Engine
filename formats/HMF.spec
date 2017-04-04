@@ -2,7 +2,7 @@
     This format is considered public domain, without any patent, with
     the following restriction:
     Use of the format is permitted as is, but if you alter the format,
-    you must change the header from HIF to something else, as to prevent
+    you must change the header from HMF to something else, as to prevent
     format incompatiblities.
 */
 //Always big endian
