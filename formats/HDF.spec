@@ -1,3 +1,15 @@
+/*
+    This format is considered public domain, without any patent, with
+    the following restriction:
+    Use of the format is permitted as is, but if you alter the format,
+    you must change the header from HDF to something else, as to prevent
+    format incompatiblities.
+    
+    No header is used in network transfer.
+    File based serialization has the following header:
+    char[3] "HDF"
+*/
+
 //Always big endian
 //Special
 0x00 Null
