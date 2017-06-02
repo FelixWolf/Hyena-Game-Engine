@@ -54,6 +54,7 @@ enum flags{
     unsigned char colorMode
     
     if pal:
+        unsigned char count
         for(i = 0; i < 255; i++)
             unsigned char color_for_palette
     
