@@ -38,12 +38,16 @@ def parseColourString(input):
         raise TypeError("Can't parse a colour string from a {}".format(type(input)))
     
     if len(input) > 1 and input[0:2] == "0x":
-        return int(input, 16)
+        tmp = int(input, 16)
+        r = (tmp&0xFF0000)>>16
+        g = (tmp&0x00FF00)>>8
+        b = (tmp&0x0000FF)
+        return ((int(b)&0xff) << 16) | ((int(g)&0xff) << 8) | (int(r)&0xff)
     
     if "," in input:
         tmp = input.split(",")
         if len(tmp) == 3:
-            return ((int(tmp[0])&0xff) << 16) | ((int(tmp[1])&0xff) << 8) | (int(tmp[2])&0xff)
+            return ((int(tmp[2])&0xff) << 16) | ((int(tmp[1])&0xff) << 8) | (int(tmp[0])&0xff)
     
     try:
         if str(int(input)) == input:
