@@ -1,0 +1,87 @@
+#!/usr/bin/env python3
+from PIL import Image
+import argparse
+
+def createMeasure(background=0x5d5d5d, border=0x8b8b8b, center=0x737373,
+                  size=256, lineSize=None):
+    #Get angry if we are not power of two
+    if not (((size & (size - 1)) == 0) and size != 0):
+        raise ValueError("Size is not a power of 2!")
+    
+    #Automatic line size
+    if lineSize == None:
+        if size < 64:
+            raise ValueError("lineSize must be specified if size is < 64!")
+        lineSize = int(size*0.015625)
+    
+    #Fill the image with a blank colour
+    data = [background]*256*256
+    
+    i = 0
+    for y in range(0, size):
+        for x in range(0, size):
+            if x < lineSize or x >= size - lineSize:
+                data[i] = border
+            elif y < lineSize or y >= size - lineSize:
+                data[i] = border
+            elif (size/2 - lineSize/2) <= y < (size/2 + lineSize/2):
+                data[i] = center
+            elif (size/2 - lineSize/2) <= x < (size/2 + lineSize/2):
+                data[i] = center
+            i = i + 1
+    return data
+    
+def parseColourString(input):
+    if type(input) == int:
+        return input
+    if type(input) != str:
+        raise TypeError("Can't parse a colour string from a {}".format(type(input)))
+    
+    if len(input) > 1 and input[0:2] == "0x":
+        return int(input, 16)
+    
+    if "," in input:
+        tmp = input.split(",")
+        if len(tmp) == 3:
+            return ((int(tmp[0])&0xff) << 16) | ((int(tmp[1])&0xff) << 8) | (int(tmp[2])&0xff)
+    
+    try:
+        if str(int(input)) == input:
+            return int(input)
+    except ValueError:
+        pass
+    
+    raise TypeError("Invalid colour string: {}".format(input))
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Generate square measure textures(TGAs)')
+    parser.add_argument("-s", "--size", type=int, default=256,
+                        help='Size (single integer) for the x and y axis')
+    parser.add_argument("-b", "--background", default=0x5d5d5d,
+                        help='Background colour(Either CSV, Hex, or Int)')
+    parser.add_argument("-r", "--border", default=0x8b8b8b,
+                        help='Border colour(Either CSV, Hex, or Int)')
+    parser.add_argument("-c", "--center", default=0x737373,
+                        help='Center cross-section colour(Either CSV, Hex, or Int)')
+    parser.add_argument("-l", "--lineSize", type=int, default=None,
+                        help='Line size(Leave empty for auto)')
+    parser.add_argument("output", help='Output file(TGA)')
+    
+    args = parser.parse_args()
+    
+    #Get angry if we are not power of two
+    if not (((args.size & (args.size - 1)) == 0) and args.size != 0):
+        print("Value --size must be a power of two integer")
+        exit(1)
+    
+    data = createMeasure(
+        size=int(args.size),
+        background=parseColourString(args.background),
+        border=parseColourString(args.border),
+        center=parseColourString(args.center),
+        lineSize=args.lineSize
+    )
+    
+    im = Image.new("RGB", (256,256), "white")
+    im.putdata(data)
+    im.save(args.output, "tga")
